@@ -1,6 +1,6 @@
-def main():
-    print("Hello from simple-layer-project!")
+from fastapi import FastAPI
+from app.routers.user_router import user_router
 
+app = FastAPI()
 
-if __name__ == "__main__":
-    main()
+app.include_router(user_router)
