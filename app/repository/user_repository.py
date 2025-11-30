@@ -19,3 +19,22 @@ class UserRepository:
         cursor.execute("INSERT INTO users (firstName, lastName, email, dateOfBirth) VALUES (?, ?, ?, ?)",
                        (firstName, lastName, email, dateOfBirth.strftime("%Y-%m-%d")))
         self.session.commit()
+
+    def get_by_id(self, user_id: int) -> UserModel:
+        cursor = self.session.cursor()
+        cursor.execute("SELECT id, firstName, lastName, email, dateOfBirth FROM users WHERE id = ?", (user_id,))
+        row = cursor.fetchone()
+        if row:
+            return UserMapper.to_model(row)
+        return None
+    
+    def update(self, user_id: int, firstName: str, lastName: str, email: str, dateOfBirth: date):
+        cursor = self.session.cursor()
+        cursor.execute("UPDATE users SET firstName = ?, lastName = ?, email = ?, dateOfBirth = ? WHERE id = ?",
+                       (firstName, lastName, email, dateOfBirth.strftime("%Y-%m-%d"), user_id))
+        self.session.commit()
+
+    def delete(self, user_id: int):
+        cursor = self.session.cursor()
+        cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
+        self.session.commit()

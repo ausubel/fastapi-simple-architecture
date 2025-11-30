@@ -1,3 +1,5 @@
+from app.repository.models.user_model import UserModel
+
 class UserMapper:
     @staticmethod
     def to_model(row: tuple) -> UserModel:
