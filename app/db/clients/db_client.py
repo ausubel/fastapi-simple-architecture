@@ -1,0 +1,9 @@
+from typing import Protocol, Optional, Sequence, Any
+
+class DbClient(Protocol):
+    def fetch_all(self, query: str, params: Optional[Sequence[Any]] = None) -> list[tuple]:
+        ...
+    def fetch_one(self, query: str, params: Optional[Sequence[Any]] = None) -> Optional[tuple]:
+        ...
+    def execute(self, query: str, params: Optional[Sequence[Any]] = None) -> int:
+        ...
