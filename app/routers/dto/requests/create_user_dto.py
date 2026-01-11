@@ -6,6 +6,7 @@ class CreateUserDto(BaseModel):
     last_name: str = Field(..., description="Last name of the user")
     email: str = Field(..., description="Email of the user")
     date_of_birth: date = Field(..., description="Date of birth of the user")
+    role_id: int = Field(..., description="Role ID of the user")
     
     @field_validator('date_of_birth')
     def ensure_18_or_over(cls, value):

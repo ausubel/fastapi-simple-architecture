@@ -9,4 +9,5 @@ class UserMapper:
             last_name=row[2],
             email=row[3],
             date_of_birth=row[4],
+            role_id=row[5],
         )

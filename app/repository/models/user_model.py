@@ -7,3 +7,4 @@ class UserModel:
     last_name: str
     email: str
     date_of_birth: str
+    role_id: int

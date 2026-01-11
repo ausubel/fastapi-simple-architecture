@@ -26,7 +26,7 @@ def get_all_users(session: LocalDb):
 @user_router.post("/", response_model=ApiResponse[UserModel])
 def create_user(user: CreateUserDto, session: LocalDb):
     user_service = get_user_service(session)
-    user_service.create(user.first_name, user.last_name, user.email, user.date_of_birth)
+    user_service.create(user.first_name, user.last_name, user.email, user.date_of_birth, user.role_id)
     return created(message="User created successfully")
 
 @user_router.get("/{user_id}", response_model=ApiResponse[UserModel])
@@ -40,7 +40,7 @@ def get_user_by_id(user_id: int, session: LocalDb):
 @user_router.put("/{user_id}", response_model=ApiResponse[UserModel])
 def update_user(user_id: int, user: CreateUserDto, session: LocalDb):
     user_service = get_user_service(session)
-    user_service.update(user_id, user.first_name, user.last_name, user.email, user.date_of_birth)
+    user_service.update(user_id, user.first_name, user.last_name, user.email, user.date_of_birth, user.role_id)
     return ok(message="User updated successfully")
 
 @user_router.delete("/{user_id}", response_model=ApiResponse)
