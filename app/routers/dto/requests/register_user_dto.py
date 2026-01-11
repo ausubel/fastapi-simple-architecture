@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field, field_validator
 from datetime import date
 
-class CreateUserDto(BaseModel):
+class RegisterUserDto(BaseModel):
     first_name: str = Field(..., description="First name of the user")
     last_name: str = Field(..., description="Last name of the user")
     email: str = Field(..., description="Email of the user")
@@ -20,16 +20,3 @@ class CreateUserDto(BaseModel):
         if '@' not in value:
             raise ValueError("Invalid email format")
         return value
-
-    model_config = {
-        "json_schema_extra": {
-            "examples": [
-                {
-                    "first_name": "John",
-                    "last_name": "Doe",
-                    "email": "jdoe@example.com",
-                    "date_of_birth": "2000-01-01"
-                }
-            ]
-        }
-    }
