@@ -30,3 +30,20 @@ CREATE TABLE posts (
 INSERT INTO roles (name, description)
 VALUES ('admin', 'Administrator'),
     ('user', 'Standard user');
+INSERT INTO users (
+        firstName,
+        lastName,
+        email,
+        password,
+        dateOfBirth,
+        roleId
+    )
+VALUES (
+        'admin name',
+        'admin lastname',
+        'admin@admin.com',
+        '$2b$12$i0u4DyNJBBuXhlT0j0u51.9MtyNEhNYoC/vXUYmoYxUxEBMAXZjhW',
+        -- borntofeel
+        '2000-01-01',
+        1
+    );

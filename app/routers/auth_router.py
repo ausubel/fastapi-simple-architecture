@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel
 from app.db.dependencies import LocalDb
 from app.services.auth_service import AuthService
@@ -55,3 +56,22 @@ def login(login_data: LoginDto, session: LocalDb):
         message="Login successful"
     )
 
+@auth_router.post("/token", response_model=TokenDto, include_in_schema=False)
+def login_for_docs(session: LocalDb, form_data: OAuth2PasswordRequestForm = Depends()):
+    user_repository = UserRepository(session)
+    user_service = UserService(user_repository)
+    
+    # Swagger sends username, but we use email
+    user = user_service.get_by_email(form_data.username)
+    
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+    
+    auth_service = AuthService()
+    
+    if not auth_service.verify_password(form_data.password, user.password):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+    
+    access_token = auth_service.create_access_token(data={"sub": user.email, "role_id": user.role_id, "user_id": user.id})
+    
+    return TokenDto(access_token=access_token, token_type="bearer")
