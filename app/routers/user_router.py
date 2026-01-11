@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from app.repository.user_repository import UserRepository
+from app.services.auth_service import AuthService
 from app.repository.models.user_model import UserModel
 from app.services.user_service import UserService
 from typing import List
@@ -23,10 +24,12 @@ def get_all_users(session: LocalDb):
     data = user_service.get_all()
     return ok(data=data, message="Users retrieved successfully")
 
-@user_router.post("/", response_model=ApiResponse[UserModel])
+@user_router.post("/", response_model=ApiResponse[UserModel], include_in_schema = False)
 def create_user(user: CreateUserDto, session: LocalDb):
     user_service = get_user_service(session)
-    user_service.create(user.first_name, user.last_name, user.email, user.date_of_birth, user.role_id)
+    auth_service = AuthService()
+    hashed_password = auth_service.get_password_hash(user.password)
+    user_service.create(user.first_name, user.last_name, user.email, hashed_password, user.date_of_birth)
     return created(message="User created successfully")
 
 @user_router.get("/{user_id}", response_model=ApiResponse[UserModel])
@@ -40,7 +43,7 @@ def get_user_by_id(user_id: int, session: LocalDb):
 @user_router.put("/{user_id}", response_model=ApiResponse[UserModel])
 def update_user(user_id: int, user: CreateUserDto, session: LocalDb):
     user_service = get_user_service(session)
-    user_service.update(user_id, user.first_name, user.last_name, user.email, user.date_of_birth, user.role_id)
+    user_service.update(user_id, user.first_name, user.last_name, user.email, user.date_of_birth)
     return ok(message="User updated successfully")
 
 @user_router.delete("/{user_id}", response_model=ApiResponse)

@@ -10,14 +10,17 @@ class UserService:
     def get_all(self) -> List[UserModel]:
         return self.user_repository.get_all()
     
-    def create(self, firstName: str, lastName: str, email: str, dateOfBirth: date, role_id: int):
-        self.user_repository.create(firstName, lastName, email, dateOfBirth, role_id)
+    def create(self, firstName: str, lastName: str, email: str, password: str, dateOfBirth: date):
+        self.user_repository.create(firstName, lastName, email, password, dateOfBirth)
 
     def get_by_id(self, user_id: int) -> UserModel:
         return self.user_repository.get_by_id(user_id)
+
+    def get_by_email(self, email: str) -> UserModel:
+        return self.user_repository.get_by_email(email)
     
-    def update(self, user_id: int, firstName: str, lastName: str, email: str, dateOfBirth: date, role_id: int):
-        self.user_repository.update(user_id, firstName, lastName, email, dateOfBirth, role_id)
+    def update(self, user_id: int, firstName: str, lastName: str, email: str, dateOfBirth: date):
+        self.user_repository.update(user_id, firstName, lastName, email, dateOfBirth)
 
     def delete(self, user_id: int):
         self.user_repository.delete(user_id)
