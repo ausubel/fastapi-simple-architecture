@@ -7,7 +7,7 @@ from app.db.clients.sqlite_client import SqliteClient
 from app.db.clients.postgres_client import PostgresClient
 
 def get_db_client():
-        dsn = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/fastapi_db")
+        dsn = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@127.0.0.1:5432/fastapi_db")
         yield PostgresClient.get_instance(dsn)
         # db_path = Path(path_str) if path_str else Path(__file__).resolve().parent.parent.parent / "database.db"
         # yield SqliteClient.get_instance(db_path)
