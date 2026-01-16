@@ -3,9 +3,10 @@ from app.repository.models.user_model import UserModel
 from app.repository.mappers.user_mapper import UserMapper
 from datetime import date
 from app.shared.role_enum import RoleEnum
+from app.db.clients.db_client import DbClient
 
 class UserRepository:
-    def __init__(self, session: LocalDb):
+    def __init__(self, session: DbClient):
         self.session = session
 
     def get_all(self) -> List[UserModel]:
