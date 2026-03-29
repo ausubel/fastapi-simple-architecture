@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends
 from typing import List, Annotated
 from app.domain.entities.post import PostModel
 from app.application.services.post_service import PostService
-from app.presentation.dto.create_post_dto import CreatePostDto
-from app.presentation.dto.update_post_dto import UpdatePostDto
+from app.presentation.dto.post.create_post_dto import CreatePostDto
+from app.presentation.dto.post.update_post_dto import UpdatePostDto
 from app.presentation.response import ApiResponse, ok, created
 from app.domain.exceptions import NotFoundError
 from app.presentation.dependencies.deps import get_post_service

@@ -3,8 +3,8 @@ from typing import List, Annotated
 from app.domain.entities.user import UserModel
 from app.application.services.user_service import UserService
 from app.application.services.auth_service import AuthService
-from app.presentation.dto.create_user_dto import CreateUserDto
-from app.presentation.dto.update_user_dto import UpdateUserDto
+from app.presentation.dto.user.create_user_dto import CreateUserDto
+from app.presentation.dto.user.update_user_dto import UpdateUserDto
 from app.presentation.response import ApiResponse, ok, created
 from app.domain.exceptions import NotFoundError
 from app.presentation.dependencies.deps import get_current_user, get_current_admin, get_user_service, get_auth_service

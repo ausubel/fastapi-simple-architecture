@@ -5,8 +5,8 @@ from typing import Annotated
 from app.application.services.auth_service import AuthService
 from app.application.services.user_service import UserService
 from app.presentation.response import ApiResponse, created
-from app.presentation.dto.register_user_dto import RegisterUserDto
-from app.presentation.dto.login_dto import LoginDto
+from app.presentation.dto.auth.register_user_dto import RegisterUserDto
+from app.presentation.dto.auth.login_dto import LoginDto
 from app.presentation.dependencies.deps import get_user_service, get_auth_service
 
 auth_router = APIRouter(
