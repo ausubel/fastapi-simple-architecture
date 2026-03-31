@@ -1,0 +1,50 @@
+from datetime import datetime, timedelta, timezone
+import jwt
+from passlib.context import CryptContext
+from typing import Optional
+from app.domain.exceptions import UnauthorizedError
+
+class AuthService:
+    SECRET_KEY = "my_secret_key" # TODO: Move to env variable
+    ALGORITHM = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+    def verify_password(self, plain_password: str, hashed_password: str) -> bool:
+        return self.pwd_context.verify(plain_password, hashed_password)
+
+    def get_password_hash(self, password: str) -> str:
+        return self.pwd_context.hash(password)
+
+    def create_access_token(self, data: dict, expires_delta: Optional[timedelta] = None) -> str:
+        to_encode = data.copy()
+        if expires_delta:
+            expire = datetime.now(timezone.utc) + expires_delta
+        else:
+            expire = datetime.now(timezone.utc) + timedelta(minutes=self.ACCESS_TOKEN_EXPIRE_MINUTES)
+        to_encode.update({"exp": expire})
+        encoded_jwt = jwt.encode(to_encode, self.SECRET_KEY, algorithm=self.ALGORITHM)
+        return encoded_jwt
+
+    def decode_access_token(self, token: str) -> dict:
+        try:
+            payload = jwt.decode(token, self.SECRET_KEY, algorithms=[self.ALGORITHM])
+            return payload
+        except jwt.PyJWTError:
+            raise UnauthorizedError("No se pudo validar las credenciales")
+
+    def verify_token_payload(self, token: str) -> dict:
+        payload = self.decode_access_token(token)
+        email: str = payload.get("sub")
+        user_id: int = payload.get("user_id")
+        role_id: int = payload.get("role_id")
+
+        if email is None or user_id is None or role_id is None:
+            raise UnauthorizedError("Faltan datos en el token")
+            
+        return {
+            "user_id": user_id,
+            "email": email,
+            "role_id": role_id
+        }
